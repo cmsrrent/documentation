@@ -1,0 +1,33 @@
+1 - initialise a new local directory for git
+	launch gitBash on PC
+	cd to local directory within gitBash
+	git init
+	git remote add origin https://github.com/cmsrrent/sdetu-training.git #URL specific to project
+
+2. Push local repo to gitHub
+	from GitBash relevant directory for project
+	git add -A
+	git commit -m "message here"
+	git push origin master
+	git status
+
+3. Clone a public repository to your local machine	
+	make a local directory within Workspace folder
+	go to the new directory within gitbash
+	git init #initialise git
+	from github get the URL of the repo you wish to clone e.g. https://gitHub.com/timothyshort/sdetu-training.git
+	git clone https://gitHub.com/timothyshort/sdetu-training.git #this will clone all files from github to local
+
+4. Push updates to gitHub
+	git status #this shows which files haven been modified locally that aren't synched with the gitHub repo
+	git add -A #this pushes changed files into the staging area
+	git status #this shows which files are now set to staging for commit
+	git commit -m "Modified some stuff" #this commits changed files to local git with a comment
+	git status #this shows status of your branch with commits ahead of master
+	git push origin master #pushes changes into gitHub, changes should be visible in gitHub
+
+6. Make changes on gitHub
+	go to gitHub and edit a file online
+	go to gitBash
+	git pull #this will pull down change from hub to local repo
+	
