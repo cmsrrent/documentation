@@ -8,7 +8,7 @@
 	from GitBash relevant directory for project
 	git add -A
 	git commit -m "message here"
-	git push origin master
+	git push -u origin master
 	git status
 
 3. Clone a public repository to your local machine	
