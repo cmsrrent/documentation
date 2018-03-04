@@ -26,8 +26,9 @@
 	git status #this shows status of your branch with commits ahead of master
 	git push origin master #pushes changes into gitHub, changes should be visible in gitHub
 
-6. Make changes on gitHub
+6. Apply file changes directly on gitHub
 	go to gitHub and edit a file online
 	go to gitBash
+	cd to appropiate local directory
 	git pull #this will pull down change from hub to local repo
 	
