@@ -1,3 +1,6 @@
+0 - overview commands
+	git config --list # shows local config e.g. username, email address, etc...
+
 1 - initialise a new local directory for git
 	launch gitBash on PC
 	cd to local directory within gitBash
