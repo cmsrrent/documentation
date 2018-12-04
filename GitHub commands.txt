@@ -1,5 +1,6 @@
 0 - overview commands
 	git config --list # shows local config e.g. username, email address, etc...
+	gi remote rm origin #remove link from local git to remote repo (helps when you cant push to repo)
 
 1 - initialise a new local directory for git
 	launch gitBash on PC
