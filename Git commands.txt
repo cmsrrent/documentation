@@ -46,4 +46,7 @@
 	e.g.
 		log.txt
 		/dir1
-		*.log
+		*.logs
+
+8. Remove files from staging area
+	git rm --cached "filename" #This takes the file out of staging for further local amends
