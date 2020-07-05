@@ -1,14 +1,18 @@
 0 - overview commands
 	git config --list # shows local config e.g. username, email address, etc...
-	gi remote rm origin #remove link from local git to remote repo (helps when you cant push to repo)
+	git remote rm origin #remove link from local git to remote repo (helps when you cant push to repo)
+	git log --oneline #view log of commits just single line
+	git log #view all commits
+	git config --global user.email "myemailaddress@here" #add email address to local config
+	git config --global user.name "your name" #add username to local config
 
 1 - initialise a new local directory for git
-	launch gitBash on PC
+	launch gitBash on PC in local directory
 	cd to local directory within gitBash
 	git init
 	git remote add origin https://github.com/cmsrrent/sdetu-training.git #URL specific to project
 
-2. Push local repo to gitHub
+2. Push local repo to remote repo (Github)
 	from GitBash relevant directory for project
 	git add -A
 	git commit -m "message here"
@@ -22,7 +26,7 @@
 	from github get the URL of the repo you wish to clone e.g. https://gitHub.com/timothyshort/sdetu-training.git
 	git clone https://gitHub.com/timothyshort/sdetu-training.git #this will clone all files from github to local
 
-4. Push updates to gitHub
+4. Push updates to remote repo (GitHub)
 	git status #this shows which files haven been modified locally that aren't synched with the gitHub repo
 	git add -A #this pushes changed files into the staging area
 	git status #this shows which files are now set to staging for commit
@@ -34,5 +38,5 @@
 	go to gitHub and edit a file online
 	go to gitBash
 	cd to appropiate local directory
-	git pull #this will pull down change from hub to local repo
+	git pull #this will pull down change from Github to your local repo
 	
