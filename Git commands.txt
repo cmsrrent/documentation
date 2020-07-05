@@ -40,3 +40,10 @@
 	cd to appropiate local directory
 	git pull #this will pull down change from Github to your local repo
 	
+7. Git Ignore - Files we may use locally but want excluding from remote repo (e.g. log files)
+	Go to local directory and type 'touch .gitignore' #This will create a .gitignore file
+	Edit .gitignore file and add filenames, directory's or wildcards for files that you want ignored
+	e.g.
+		log.txt
+		/dir1
+		*.log
