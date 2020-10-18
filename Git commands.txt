@@ -1,15 +1,18 @@
 0 - overview commands
+	git --help # all git helps commands
+	git help <command> # help on a specific git command e.g. git help push
 	git config --list # shows local config e.g. username, email address, etc...
-	git remote rm origin #remove link from local git to remote repo (helps when you cant push to repo)
-	git log --oneline #view log of commits just single line
-	git log #view all commits
 	git config --global user.email "myemailaddress@here" #add email address to local config
 	git config --global user.name "your name" #add username to local config
-
+	git remote rm origin #remove link from local git to remote repo (helps when you cant push to repo)
+	git log --oneline #view log of commits just single line
+	git log # view all commits on the current branch
+	git status # status of working directory
+	
 1 - initialise a new local directory for git
 	launch gitBash on PC in local directory
 	cd to local directory within gitBash
-	git init
+	git init # initialises local repo
 	git remote add origin https://github.com/cmsrrent/sdetu-training.git #URL specific to project
 
 2. Push local repo to remote repo (Github)
