@@ -29,7 +29,11 @@
 	from github get the URL of the repo you wish to clone e.g. https://gitHub.com/timothyshort/sdetu-training.git
 	git clone https://gitHub.com/timothyshort/sdetu-training.git #this will clone all files from github to local
 
-4. Push updates to remote repo (GitHub)
+4. Create a new branch
+	git checkout -b <branch-name> #create a new branch with name provided and check it out immeditely
+	git branch <branch-name> #creates new branch with name provided but doesnt checkout into it
+
+5. Push updates to remote repo (GitHub)
 	git status #this shows which files haven been modified locally that aren't synched with the gitHub repo
 	git add -A #this pushes changed files into the staging area
 	git status #this shows which files are now set to staging for commit
