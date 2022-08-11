@@ -1,0 +1,127 @@
+Accessibility Notes
++++++++++++++++++++
+
+guidelines
+https://www.w3.org/WAI/
+
+Automated Checks
+- Page title
+- image alt texts
+- Heading structure
+- Colour Contrast
+- HTML Structure (looking for syntax errors)
+- ARIA Labels (used for labelling elements with no visible label on page)
+
+Decide on WCAG Conformance level you want to achieve A, AA, AAA  **Aim for A to start off with
+
+Web Content Accessibility Guidelines
+=====================================
+WCAG 2.0 (Dec 2008) Principles
+Perceivable - present information in ways they can perceive
+Operable - Must be able to operate the interface (e.g. keyboard only)
+Understandable - Can understand the information, clearly and helpful error messaging
+Robust - Access with assistive technologies (e.g. screen readers)
+
+WCAG 2.1 (June 2018) - Extension of 2.0 Principles
+Mobile Accessibility - Portrait and landscape
+Low Vision - Zoom/Magnify in and out without loss of quality/stacking of text
+Cognitive and Learning Abilities
+
+WCAG Conformance level
+======================
+Level A - 25 criteria from checklist
+Level AA - + 13 criteria from checklist
+Level AAA - + 23 criteria from checklist
+
+AAA is not mandatory, Level AA is a realistic aim for most websites
+
+Manual tools
+===================
+- Keyboard only
+    - CTRL L (address bar)
+    - TAB
+    - SHIFT TAB
+    - ARROW
+    - SPACE
+    - ENTER
+
+- Screen readers
+    - Mac/iOS Voice over
+    - NVDA - Free desktop reader
+    - JAWS - Paid desktop reader
+    - Android talkback
+
+Semi Automated Tools
+====================
+- Axe
+    - Chrome / FF / Edge Extension
+    - Will analyse the page and provide a report of violations
+- Wave
+    - Chrome / FF / Edge Extension
+    - Will also analyse and annotate the page with any issues/errors/violations
+- Google Lighthouse
+    - Built into Chrome
+    - Gives a score
+
+
+Automated Tools
+===============
+- Axe CLI
+- Jest Axe
+- Cypress-Axe
+- Axe Selenium
+- Axe WebdriverIO
+- Axe TestCafe
+
+Axe CLI
+=======
+- CLI runner
+- Node and NPM required
+- npm install -g axe-cli
+- To run from CLI
+    - axe www.bbc.co.uk
+    - will run in chrome headless by default
+    - output will show any errors
+    - can run and disable some checking rules
+    - --save test-results.json // this will output the test run to a json file rather than the screen
+
+Cypress-Axe setup
+=================
+- Code, NPM and VS Code required
+- create project
+- npm init the project
+- install cypress and axe in one command
+    - npm i -D cypress@4.8.0 cypress-axe@0.8.1  //NB specific versions here
+    - npx cypress open for first launch
+    - support/index.js "import 'cypress-axe'" this will extend cypress default behaviour to add in axe libraries
+
+Cypress-Axe using
+=================
+- VS Code
+    - create test spec file
+    - add cypress ref types ///<reference types="cypress"/>
+    - write standard test describe and it block
+    - cy.injectAxe() // add command after test page
+    - cy.checkA11y() // will check for accessibility failures and fail any in the test run
+    - inspect failures in the runner and logs will be shown as to rule that has failed
+
+- Check elements Rather than full page Exclude
+    - cy.checkA11y({exclude: ['.learn']}); // this will exclude the page element .learn from the check
+
+- Check elements Rather than full page Include
+    - cy.checkA11y('.learn'); // this will include the page element .learn in the check
+
+- Include impact rules with serious and critical impacts
+    - cy.checkA11y(null, {includedImpacts: ['critical', 'serious']})
+
+- Exclude specific impact rules
+    - cy.checkA11y(null, {rules: {
+        'color-contrast': {enabled: false}  
+        }})    
+
+
+Summary
+========
+Accessibilty requires a multi techniques to be effective 
+Automated testing is not foolproof, it compliments the overall testing aproach
+Get actual users to give feedback on your website
