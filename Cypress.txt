@@ -1,0 +1,302 @@
+Cypress Tips
+++++++++++++
+
+Short Tips
+==========
+'then' command doesn't use retry logic
+'should' command does use retry logic
+/// <reference types="cypress" />  top of each file for intellisense
+
+
+Multiple assertions in one command
+==================================
+Example below shows 2 commands performing 2 separate assertions:
+
+  cy
+    .get('[data-cy=task]')
+    .eq(0)
+    .should('contain.text', 'bread')
+
+  cy
+    .get('[data-cy=task]')
+    .eq(1)
+    .should('contain.text', 'milk')
+
+Example below shows same 2 assertions being performing inside one function that can have its own
+conditional error handling inside
+
+  cy
+    .get('[data-cy=task]')
+    .should( item => {
+      if (item.length !== 2) {
+        throw new Error('Not enough elements!')
+      }
+      expect(item[0]).to.contain.text('bread')
+      expect(item[1]).to.contain.text('milk')
+    })
+
+Dealing with hidden/non visible elements by default
+===================================================
+1 - can click on an invisible element using force
+
+  cy
+    .get('[data-cy="star"]')
+    .click(force: true)
+
+2 - invoke a show function on the element
+
+  cy
+    .get('[data-cy="star"]')
+    .invoke('show')
+
+3 - invoke a css class to change the behaviour of the element
+
+  cy
+    .get('[data-cy="star"]')
+    .invoke('addClass', 'OverDue')
+
+4 - Trigger a mouse over command to invoke the desired outcome
+
+  cy
+    .get('[data-cy="star"]')
+    .trigger('mouseover')
+
+5 - Trigger a mouse out command to invoke the desired outcome
+
+  cy
+    .get('[data-cy="star"]')
+    .trigger('mouseout')
+
+
+To preserve cookies in a test file
+==================================
+
+Adding this line in the beforeEach function will prevent the specific cookie(s) from being
+deleted for all individual tests in the file but NOT globally
+
+  beforeEach(() => {
+
+    Cypress.Cookies.preserveOnce('trello_token')
+
+    cy
+      .visit('/')
+
+  })
+
+Making and API request direct from the test
+===========================================
+
+This is useful for setup activities that are not strictly part of the test we are performing in the FE 
+Often added in a beforeEach hook within side the test file 
+
+  cy.request({
+    method: 'POST',
+    url: '/api/reset',
+    body: {
+        name: 'board creates by .request() command'
+    }
+  })
+
+Listen for server response from API before moving on
+====================================================
+
+it('Intercept requests', () => {
+
+  cy
+    .intercept({
+      method: 'POST',
+      url: '/api/boards'
+    }).as('createBoard')
+
+  cy
+    .visit('/')
+
+  cy
+    .get('[data-cy=create-board]')
+    .click()
+
+  cy
+    .get('[data-cy=new-board-input]')
+    .type('launching a rocket{enter}')
+
+  cy
+    .wait('@createBoard')
+    .then( (board) => {
+      expect(board.response.statusCode).to.eq(201)
+      expect(board.request.body.name).to.eq('launching a rocket')
+    })
+
+});
+
+
+Stubbing Responses from API Call/server
+=======================================
+
+We can substitute a file that will mock the response from an API clearly
+these can be json files in the fixtures folder, could be success or error Responses
+
+- example below shows as response from the API that is modified by a function before it is returned
+ to the FE
+
+it('Stubbing response', () => {
+
+  cy
+    .intercept({
+      method: 'GET',
+      url: '/api/boards'
+    }, (req) => {
+
+      req.reply( (res) => {
+        res.body[0].starred = true
+
+        return res
+      })
+    }).as('boardList')
+
+  cy
+    .visit('/')
+
+});
+
+- Example below forces a network error from the API call
+  cy
+    .intercept({
+      method: 'GET',
+      url: '/api/boards'
+    }, {
+        forceNetworkError: true
+    }).as('boardList')
+
+- Example below used a fixture file names MyOwnBoards for the response
+  cy
+    .intercept({
+      method: 'GET',
+      url: '/api/boards'
+    }, {
+        fixture: 'MyOwnBoards'
+    }).as('boardList')
+
+- Example below directly returns a body that is empty
+  cy
+    .intercept({
+      method: 'GET',
+      url: '/api/boards'
+    }, {
+        body: []
+    }).as('boardList')
+
+
+Custom commands
+===============
+
+Creating a sequence of common commands and wrapping them into a new custom cypress command
+that can be called from anywhere in the project for a commonly used function within the test files
+
+Must be added into the following cypress file:
+/support/commands.js file is the locatation for your own library of custom commands
+
+Custom command can take optional arguments to assist in creating custom conditional logic in the command
+to cater for different scenarios
+
+Example of custom command named 'addBoard':
+
+// command accepts an argument 'input'
+
+Cypress.Commands.add('addBoard', (input) => {
+
+  cy
+    .get('[data-cy="create-board"]')
+    .click();
+
+  cy
+    .get('[data-cy=new-board-input]')
+    .type(input + '{enter}');
+
+})
+
+Custom commands can be enhanced further by extending cypress intellisense by adding the following file 
+into the /cypress/support folder:
+
+command.d.ts
+
+Inside the file we can add the following namespace with js-doc command which will be displayed as helper
+text in the IDE
+
+// in cypress/support/index.d.ts
+// load type definitions that come with Cypress module
+/// <reference types="cypress" />
+
+declare namespace Cypress {
+  interface Chainable {
+
+    /**
+     * Creates a new board via UI
+     *
+     * @example
+     * cy
+     *   .addBoard('board name')
+     */
+    addBoard()
+  }
+}
+
+
+Plugins
+=======
+
+Vast array of plugins within the node framework that can extend cypress out of the box functionality
+
+find the plugin you wish to use and then install at the terminal using npm install info from the plugin
+documentation
+
+++ cypress-file-upload plugin:
+npm install --save-dev cypress-file-upload
+
+add the import statement to support/commands.js file
+import 'cypress-file-upload';
+
+The following code selects an element that has an upload function and uses the file-upload command attachFile
+to upload a file:
+
+    .get('.dropzone')
+    .attachFile('logo.png', { subjectType: 'drag-n-drop'})
+
+++ Applitools eyes plugin
+eyes-cypress
+npm i -D @applitools/eyes-cypress
+
+npx eyes-setup
+
+requires an applitools API key form the applitools portal
+
+example of eyes test in action:
+
+it('Installing plugins', () => {
+
+  cy
+    .visit('/');
+
+    cy
+    .eyesOpen({
+      appName: 'Trello app',
+      testName: 'Trying out Applitools plugin',
+      browser: { width: 800, height: 600 },
+    });
+
+  cy
+    .eyesCheckWindow('Board list');
+
+  cy
+    .eyesClose();
+
+});
+
+
+Running a task
+==============
+
+Tasks are scripts that are run in the background for setup activity
+
+Tasks are setup in /plugins/index.js file
+
+
