@@ -1,0 +1,319 @@
+AWS Lambda
+==========
+
+Triggers
+++++++++
+Cloudwatch Events - used for setting timers on Lambdas to fire on schedule
+API gateway for REST API's
+SNS or SQS for event processing
+DynamoDB Streams for Record Changes - When records change, call lambda and perform some action
+S3 for Object Creation / updates
+
+
+Synchronous and Asynchronous Invocations
+++++++++++++++++++++++++++++++++++++++++
+Sync can have cost implications if daisychaining of lambdas is the setup
+Async can be suitable for fault tolerant use cases (e.g. SQL into lambda)
+Different failure behaviour
+ - sync fail instant
+ - async fail silent (maybe to DLQ)
+
+Timeouts
++++++++++
+Default is 3 seconds, can be amended up to 15 mins but not advised
+Can check Monitor section to see if lambda is timing out
+
+Memory
+++++++
+Crucial for setting not just memory available during execution but also the changes the instance type that is used (CPU, networking, etc)
+128MB - 10,240MB available
+More memory = more cost
+Just raising memory wont always be best option for performance
+
+Pro tips
+- increase memory can reduce impact of cold start
+- Node js Python - best performing
+- Java / C# - least performing
+- Doesn't result in linear performance gain (double memory doesn't necesarily double performance)
+- Start mem low, check metrics and increase gradually
+- Lambda power tuning can check all permutations of memory setting and avise of optimal setting
+
+Pricing
++++++++
+Factors in pricing:
+
+Invocation count	- number of times invoked
+			- $.20 per 1 million requests
+
+Memory			- The amount of memory provisioned (not used)
+
+Duration		- How long you run the function for
+			- Longer run costs more
+
+examples:
+
+3 million invocations
+512 MB mem
+1 second duration
+Cost $18.74 per month
+
+30 million invocations
+128 MB mem
+200ms second duration
+Cost $11.63 per month
+
+Cost estimating:
+
+Lambda power tuning
+Lambda cost calculator https://aws.amazon.com/lambda/pricing/
+
+Pro Tips - Cost Optimisation
+- start low memory and increase
+- compute optimizer tool
+- Lambda power tuning
+- 1 million free requests per month ond 400,000 GB seconds in free tier
+
+
+Anatomy of Function Execution
+++++++++++++++++++++++++++++++
+
+Steps to execute a lambda function for first time
+1 - Code download from s3 to local machine which is executing function
+2 - Start execution environment (time depends on programming language used)
+3 - Execute initialisation code (outside of handler function, import libraries, get env variables etc..)
+4 - Execute handler code
+
+No containers / full cold start all steps 1-4 need to run
+Container running / warm start step 4 only ideal scenario for execution
+Container running but no initaition done / 3-4 only partial cold start
+
+Cold start also occurs while scaling up - 500 containers per minute max
+
+To minimize cold start
+- Minimize library dependancies
+- Only import what you need
+- Raise memory config
+- Utilize provisioned concurrency (lambdas always in warmed state)
+
+
+Concurrency and throttling
+++++++++++++++++++++++++++
+
+Concurency - things happening at the same time
+
+In lambda - its number of requests being served as a given moment
+
+New containers are spanwed for each concurrent request
+It is a major scalling consideration and can cause apps to fail due to Throttling
+Lambda will auto scale BUT to a max of 1000 units of concurrency per AWS account (can be raised)
+1000 units are shared for each AWS Account and region for all lambdas
+3 types
+ - unreserved
+ - reserved
+ - provisioned
+
+Throttling - aka RateExceeded
+
+In lambda - when lambda rejects the request
+
+3 types
+unreserved
+- default if you do nothing in account
+- common concurrency pool of 1000 units
+
+reserved
+- option to specify to reserve x unit of units for a specific lambda
+- subtracts amount available from unreserved concurrency pool
+- can be utilised to minimize or maximize processing rate
+	- e.g. rate limit messages being processed from sqs
+- sets a hard limit and will throttle if reached / cannot be breached
+
+provisioned
+- dedicated and always on concurrency pool at function and version level
+- removes cold start problem
+- can specify x units
+- extra cost incurred ($34 a month for 5 units always on)
+- supports autoscaling policies based on usage to autoallocate more containers
+
+Lambda can be throttled from aws console as an emergency stop which sets reserved concurrency to 0
+
+1000 concurrency limit can be raised from 1000 up to 10000
+
+Pro Tips
+** Setup alarms on throttles for early indicators of issues in config
+** evaluate concurrency needs and plan a strategy (traffic patterns, latency)
+** Have clients use exponential backoff to avoid retry storms 
+** Raising memory limit can help improve performance and reduce concurrency
+** Use small amount of provisioned concurrency to mitigate cold starts for latency sensitive apps
+
+Versions
+++++++++
+
+All about changing lambda, code, memory, concurrency prefs
+
+- snapshots of code and settings of a function
+- allow us to have multiple versions of a function - useful for quick rollbacks
+- options are optional
+- New uploads default to $LATEST version
+
+example
+
+v1 - 1
+v2 - 2
+v3 - 3 $LATEST
+
+
+Alias
++++++
+
+- An alias is a named pointer to a specific version
+- e.g. v1 is IDV2.1, v2 is IDV2.2
+- Useful for beta testing or pre-prod envs
+
+v1 - 1
+v2 - 2		
+v3 - 3 $LATEST	prod
+
+
+Version / Alias Weights
++++++++++++++++++++++
+
+- You can assign weights to diff versions using a version/alias
+- 90% of Traffic to Version 1, 10% to Version 2
+- Useful to version validation prior to a full blown deployment
+
+Control in AWS console, setting an alias will open then ability to wieght (i.e. split) traffic to versions
+
+Env Variables
++++++++++++++
+
+Pairs of Strings with key/value
+
+Change config but don't change code
+
+Examples
+- Stage (dev1, preprd)
+- Endpoint URL (prod or mock)
+- DB Connection String
+
+'AWS_REGION' - env var declared by default
+
+set per lambda and can be referenced in code:
+
+    databaseName = os.environ['databaseName']
+    regionName = os.environ['AWS_REGION']
+
+VPC Integration
++++++++++++++++
+
+TBC
+
+
+Monitoring Metrics
+++++++++++++++++++
+
+Invocations - count number of executions of the lambda
+Error Count / success rate
+Duration - min/avg/max
+Concurrent Executions - useful if throttling is occurring
+Unreserved Concurrent Executions - excludes any reserved concurrency
+
+Percentiles:
+P50 - Median of data
+P90 - 90th 
+P99 - 99th record
+
+Alarm on P90
+
+Throttles - Want this to be as close to zero as possible
+Iterator Age - Using lambda to pull data from streams generate by dynamo db stream or kenesis
+
+Tips
+- look at metrics!
+- Setup appropiate alarms on metrics
+ - e.g. Success rate drops below 90%
+ - e.g. Response time moves above 10 seconds
+
+Logging
+++++++++
+**Every container will generate a specific logstream file in cloudwatch
+Log lines contain metadata about the execution
+writing to stand out out will write logs into cloudwatch
+
+START - Contains request id for each invocation, includes Version of the code
+END - Contains same request id - indicates end of invocation
+REPORT - Request id, Duration, billed duration and Memory used
+
+Metric Filters
+++++++++++++++
+
+Allow us to write patterns to extract metrics form log lines
+
+Cloudwatch Logs insights
+++++++++++++++++++++++++
+Search for patterns across multiple funcitons at once
+Similar concept to Athena log searching, but focus on cloudwatch logs
+Pay per use of data scanned
+
+Logging - Tips
+++++++++++++++
+- Don't put too much detail in logs as its pay per use and these can add up
+- Embed log lines with important/valuable transaction id's to make tracing easier
+- Use cloudwatch logs insights for fuzzy searching
+- Setup log retention policy or archive regularly (into s3)
+
+Dead Letter Queue - DLQ
++++++++++++++++++++++++
+
+When a message cannot be processed any further by a lambda
+Destination to hold failed message content
+Useful when SQS is the event source for the lambda
+After a number if attempts, messages can be sent to the DLQ to be acted on
+
+Method 1 (source invocation is person)
+ - on failure, send message to a queue from the code inside the lambda itself
+
+Method 2 (source invocation is SQS event queue)
+- throw an exception up to the handler itself and the message should be routed to the source itself with the retry policy specified should on that retry count being reached will be routed to DLQ
+
+Tips
+++++
+- Always use DLQ for prod applications
+- Alarm on DLQ size > 0
+- Have a process for re-driving messages
+
+Layers
+++++++
+Allow you to add external libraries, data config files to function
+zip up package contents and upload via console, if > 10MB then has to be uploaded to S3 and referenced
+
+Lambda Filesystem
++++++++++++++++++
+Mount an EFS colume and make its contents available to function
+
+
+Lambda and Docker
+++++++++++++++++++
+You can deploy your functions using a Docker image
+10GB size limit
+Base images are provided
+Requires you to create a docker image file, upload to ECR and link with lambda function
+
+CI/CD with AWS Lambda
++++++++++++++++++++++
+For large projects we want to deploy lambda using CI/CD pipelines
+Can integrate with Github/CodeCommit and Codebuild (compile code, run unit tests and upload to s3) for an automatic build system
+Leverage CodePipeline to orchestrate the changes and upload your function
+CloudFormation can then create a new instance of a lambda and deploy the code from codebuild into the correct location
+Code pipeline will orchestrate the codebuild and cloudformation activities
+
+local testing
+AWS SAM - Serverless Application Model - local development and testing
+AWS CDK - Cloud Development Kit - Infastructure as Code
+
+RDS Proxy
++++++++++
+Middleware to support many connections attempting to connect to a database from multiple lambda invocations
+RDS has additional cost proportional to db size
+Aurora, postgress and mysql through RDS service on AWS
+
