@@ -1,13 +1,12 @@
-Gherkin Keywords
-================
+# Gherkin Keywords
 
-Feature
-Scenario
-Scenario Outline
-Examples
-BAckground
-Given
-When
-Then
-And
-But
+- Feature
+- Scenario
+- Scenario Outline
+- Examples
+- Background
+- Given
+- When
+- Then
+- And
+- But
