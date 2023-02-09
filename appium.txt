@@ -1,0 +1,20 @@
+Helpers for Appium on Browserstack
+++++++++++++++++++++++++++++++++++
+
+node file.js -- command to run the file within a node project
+npm install wd --appium dependancy prior to running in browserstack
+
+https://www.npmjs.com/package/wd
+
+Appium architecture in browserstack
+https://www.browserstack.com/guide/appium-tutorial-for-testing
+
+Appium getting started
+https://www.browserstack.com/docs/app-automate/appium/getting-started/nodejs
+
+
+Browserstack university
+https://test-university.browserstack.com/
+
+iOS test app
+

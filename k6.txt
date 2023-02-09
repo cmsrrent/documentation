@@ -1,0 +1,154 @@
+Performance Testing Overview
+++++++++++++++++++++++++++++
+
+Performance testing is an umbrella term for a group of tests that encompasses many types of tests
+
+A subset of performance engineering in computer science practice which deals with quality assurance of software by putting pressure and workload, either manually or automatically on the software to see how it behaves and to make sure it is responsive and stable enough under that load. It’s all about expectations, for example if you expect your API or website to serve 10K users simultaneously, but when you apply pressure it quickly becomes evident that your calculations differ from the reality and the reverse proves to be the case, then you should analyze the weak points in your design or setup to see how you can benefit from high load
+
+Load testing: basically putting load on the system to see how it behaves.
+
+Stress testing: load testing to find the maximum amount of load the system can handle.
+
+Soak testing: load testing a system continuously and monitoring for memory leaks and behavior of the system.
+
+Spike testing: load testing with sudden increase or decrease of the load.
+
+Breakpoint testing: like stress testing, but incremental load is put on the system over time to see how it behaves.
+
+Configuration testing: changing configuration to see how the system behaves under different configurations, under load.
+
+Isolation testing: Isolating a fault domain and repeating the test to confirm the failure.
+
+Internet testing: global load testing for big companies to see how to system behaves from different regions.
+
+The most common purpose of performance testing is to find out how reliable, stable, performant and responsive the system is. Metrics like throughput and response time is a good measure of such a system.
+
+
+Setting Goals of performance tests
+++++++++++++++++++++++++++++++++++
+
+Concurrency: systems which would set this goal, usually have a concept of end-user and need to see how the system behaves while many concurrent users try to access the system. They basically want to test how many of requests fail/pass under high loads of users. This both includes many concurrent users and each requesting multiple resources at the same time.
+
+Throughput: systems with no concept of end-users, would set this goal to see how the system behaves overall, while there is a ton of requests/responses coming in/out of the system.
+
+Server response time: this goal signifies the time it takes from the initial request from the client to the server up until a response is sent back from the server.
+
+Regression testing: sometimes the goal is not to put “heavy load” on the system, but is more about “normal load” and functional and regression testing to see how a change would affect our system’s performance and if it still adheres to our defined SLAs.
+
+The general idea is to measure how a system or system of systems behave(s) under heavy load, in terms of speed, scalability, stability and resiliency. Each of which can be measured by these goals.
+
+Speed can be measured by time it takes for request to be handled by the server and how much time it takes for this request/response to happen.
+
+Scalability can be measured by how well the system scales if the load is increased and by measuring if it sustains over a period of time under this load.
+
+Stability can be measured by how well the system sustains the load and to see if it stands against a high number of errors and events and still stays responsive and stable.
+
+Resiliency can be measured by how the system recovers from crashes and down-times and responds to requests, after putting too much or too frequent load on it and eventually crashing the system.
+
+K6 OSS (Open Source Software)
++++++++++++++++++++++++++++++
+- Run locally
+- free
+
+
+K6 Cloud
+++++++++
+- Paid version
+- Same performance test engine as OSS
+- Can use cloud based VU's across AWS regions
+- Integrated reporting tool
+- Integrated dashboarding and insights into performance runs
+
+
+Custom Metrics
+++++++++++++++
+
+1. Counter
+This is a simple cumulative counter that can be used to measure any cumulative value like number of errors during the test.
+
+2. Gauge
+This metric lets you keep the last thing that is added to it. It’s a simple over-writable metric that holds its last added value.
+
+This metric can be used to retain the last value of any test item, be it response time, delay or any other user-defined value.
+
+3. Rate
+This built-in metric keeps the rate between non-zero and zero/false values. For example if you add two false and one true value, the percentage becomes 33%.
+
+It can be used to keep track of the rate of successful request/responses and compare them with errors.
+
+4. Trend
+This metric allows you to statistically calculate your custom value. It will give you minimum, maximum, average and percentiles
+
+
+Script accepting environment variable for hostname
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+import http from 'k6/http';
+
+const hostname = `http://${__ENV.DOMAIN}`;
+
+export default function () {
+    let res = http.get(hostname + '/my_messages.php');
+}
+
+
+run using....
+k6 run test.js -e DOMAIN=test.k6.io
+
+Despite the name, these variables can hold many types of information, not just information about the environment. Here are some other things you could use an environment variable for:
+
+- think time
+- tags you want to affix to requests for this run
+- test data file to be used
+- pages to exclude or include
+- scenario
+
+
+Command line parameters
++++++++++++++++++++++++
+
+The duration specifies how long the test executes for. You can set this on the command line with the flag --duration:
+k6 run test.js --duration 30s
+
+You can set the number of iterations with the --iterations or -i flag, like this:
+k6 run test.js --iterations 100
+
+
+Think time
+++++++++++
+
+is the amount of time that a script pauses during test execution to simulate delays that real users have in the course of using an application.
+
+
+Random sleep between
+If you'd prefer to define your think time in integers, try the randomIntBetween function from the k6 library of useful functions, called jslib.
+
+First, import the relevant function:
+
+import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.0.0/index.js";
+Then, add this within your default function:
+
+sleep(randomIntBetween(1,5));
+
+
+Runnning a load test
+++++++++++++++++++++
+
+k6 comes with some default test options, but there are four different ways to change the test parameters for a script:
+
+You can include command-line flags when running a k6 script (such as k6 run --vus 10 --iterations 30).
+You can define environment variables on the command-line that are passed to the script.
+You can define them within the test script itself.
+You can include a configuration file.
+
+Thresholds
+++++++++++
+
+In clarifying test criteria, we talked a bit about thresholds and how they can be used to implement other criteria, such as SLAs.
+
+Below are the most common types of thresholds you can set. You can set multiple types thresholds in a single test:
+
+Error rate
+Response time
+Checks
+Testing best practice: Use error rate, response time, and checks thresholds in your tests where possible.
