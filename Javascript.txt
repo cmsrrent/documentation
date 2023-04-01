@@ -1,0 +1,252 @@
+Javascript tips
+===============
+
+Variables / Consts / Data types
++++++++++++++++++++++++++++++++
+
+- use camelcase
+myHolder
+myNumber
+myArray
+
+Always case sensitive!
+
+can use single or double quotes interchangably
+
+- declare variables on one line
+var age, dateOfBirth, gender
+age = 5
+gender = "Male"
+
+- let v var
+all about scope, var is global within the function where is is defined - let has more limited scope within the block it is defined
+
+- const
+const occupation = "Engineer"
+cannot be updated again within the code
+must be assigned at the point of creation
+
+- 5 data types
+let middleName = "David" //string
+let ageOfCat = 19 //number
+let isMarried = true //boolean
+let yearsInsured = null //null - no value
+let nuuberOfCars = undefined //undefined - error state
+
+
+Arrays 
+++++++
+
+example:
+
+var myArray = ["one", "two", "three"]
+
+Access as:
+myArray[0]
+myArray[1]
+myArray[2]
+
+Access as:
+myObject.one
+myObject.two
+
+var myArray = ["test", 0, "green"];
+var mySecondArray = ["John", 25, "blue"];
+
+//Add to an array
+myArray.push("next item");
+myArray[6] = "New item";
+
+xx = myArray.length;
+for (i=0; i < xx; i++)
+	output += myArray[i] + "<BR>";
+}
+
+myArray.pop(); // remove last element from array
+myArray.shift(); // remove first element from array
+myArray.unshift("New addition first"); // remove first element from array
+
+//splice
+myArray.splice(2, 0, "one", "two");
+
+//sort
+myArray.sort();
+myArray.reverse();
+
+var newList = myArray.concat(mySecondArray)
+
+Objects
++++++++
+
+var myObject = {one:"this is first", two:"This is second"}
+
+myObject.one
+myObject["two"]
+
+
+Strings and Manipulation Methods
+++++++++++++++++++++++++++++++++
+
+var myString = "Hello World is global"
+
+myString = "Hello World is global"
+myString.charAt(6) = W
+myString.indexOf('o') = 17 //shows position of last occurance in string
+myString.replace('World', 'Everyone') = Hello Everyone is global
+myString.search('World') = 6 //position of where is first occurance of first letter
+myString.slice(6) = World is global //starts at position 6 and returns everything after it
+myString.substr(3, 15) = lo World is glo //starts at position 3 and then counts 15 chars
+myString.substring(4, 19) = lo world is glob //starts at index 4 and ends at index 19
+myString.toLowerCase() = hello world is global
+myString.toUpperCase() = HELLO WORLD IS GLOBAL
+
+
+Numbers and Manipulation Methods
+++++++++++++++++++++++++++++++++
+
+var myNumber = 100.1234
+
+myNumber = 100.1234
+myNumber.toString() + "hello" = 100.1234hello
+myNumber.toFixed() = 100 //rounds number
+
+myString = "10.10 World 55 blah"
+parseInt(myString) = 10 //takes the integer out of the string
+parseFloat(myString) = 10.1 //takes the float out of the string
+
+Math.random()*100  = Returns a random number from 0 to 100
+Math.round(myNumber) = 100 //Rounds down
+Math.ceil(myNumber) = 101 //Rounds up
+
+
+Dates and Manipulation Methods
+++++++++++++++++++++++++++++++
+
+Date() - Current datetime from the browser/server
+new Date(2022, 12, 31, 5, 120, 30, 0) = Set a date
+new Date("2022,DECEMBER,31")
+new Date().getTime() = 143788042366 //
+new Date().getHours() = 23 //current hours
+
+RegEx
++++++
+
+i = case sensitive
+g = global match
+
+var needle = /me/g; // find "me" as a global find
+var needle = /me/i; // find "me" byt search cases sensitive
+
+Functions
++++++++++
+
+function showCalculation(a,b) {
+   //perform some validation
+   return a+b
+}
+
+
+Scope
++++++
+
+local scope - within a function
+global scope - across all functions
+
+
+Conditional Statements
+++++++++++++++++++++++
+
+// single if
+if(myNumber > 2) {
+	myMessage = "greater than 2";
+}
+
+// if else
+if(myNumber > 2) {
+	myMessage = "greater than 2";
+} else {
+	myMessage - "not greater than 2";
+}
+
+if, else if else
+if(myNumber > 2) {
+	myMessage = "greater than 2";
+} else if(myNumber < 2) {
+	myMessage = "less than 2";
+} else {
+	myMessage = "not matched";
+}
+
+
+// single if with OR
+if(myNumber > 2 || myNumber < 0) {
+	myMessage = "greater than 2";
+}
+
+// single if with AND
+if(myNumber > 2 && myNumber < 0) {
+	myMessage = "greater than 2";
+}
+
+
+//Switch statement
+
+switch (myNumber) {
+	case 1:
+		myMessage = "This is one";
+		break;
+	case 2:
+		myMessage = "This is two";
+		break;
+	case 3:
+		myMessage = "This is three";
+		break;
+	default:
+		myMessage = "Not matched";
+}
+
+//For While do Loop
+
+for (i = 0; i < myArray.length; i++) {
+	output += i + "" + myArray[i];
+}
+
+for (ii in myObject) {
+	output += ii + "" + myObject[ii];
+}
+
+while (iii < myArray.length) {
+	output += iii + "" + myArray[iii];
+	iii++;
+}
+
+while ( myArray[iiii] ) {
+	output += iiii + "" + myArray[iiii];
+	iiii++;
+}
+
+// break from loop if condition met
+for (i = 0; i < myArray.length; i++) {
+	if(i ===1) {break}	
+	output += i + "" + myArray[i];
+}
+
+// skip current increment from loop if condition met but continues with loop
+for (i = 0; i < myArray.length; i++) {
+	if(i ===1) {continue}	
+	output += i + "" + myArray[i];
+}
+
+
+Try Catch and add debugger
+++++++++++++++++++++++++++
+
+try {
+	document.getElementBy("content").innerHTML;
+}
+catch(errorMessage){
+	console.log(errorMessage)
+}
+
+var moreText = "blah blah blah"
+debugger;
