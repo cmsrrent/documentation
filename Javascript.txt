@@ -126,6 +126,20 @@ Math.random()*100  = Returns a random number from 0 to 100
 Math.round(myNumber) = 100 //Rounds down
 Math.ceil(myNumber) = 101 //Rounds up
 
+Relational / comparison equality operators
+++++++++++++++++++++++++++++++++++++++++++
+
+ > - more than
+ < - less than
+ >= -more than equal
+ <= - less than equal
+
+//equality operator
+
+var x = 1
+console.log(x == '1') // loose comparison
+console.log(x === '1') // strict comparison
+
 
 Dates and Manipulation Methods
 ++++++++++++++++++++++++++++++
