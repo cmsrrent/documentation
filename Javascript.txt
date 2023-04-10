@@ -23,8 +23,8 @@ all about scope, var is global within the function where is is defined - let has
 
 - const
 const occupation = "Engineer"
-cannot be updated again within the code
-must be assigned at the point of creation
+cannot be updated again within the code block
+MUST be assigned at the point of creation
 
 - 5 data types
 let middleName = "David" //string
