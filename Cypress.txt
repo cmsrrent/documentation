@@ -5,7 +5,7 @@ Short Tips
 ==========
 'then' command doesn't use retry logic
 'should' command does use retry logic
-/// <reference types="cypress" />  top of each file for intellisense
+/// <reference types="Cypress" />  top of each file for intellisense
 
 
 Multiple assertions in one command
@@ -300,3 +300,9 @@ Tasks are scripts that are run in the background for setup activity
 Tasks are setup in /plugins/index.js file
 
 
+Locators of elements on page
+===========================
+
+cy.get('.class-name');  --css selector
+cy.get('#some-id'); --using id
+cy.get('[type="text"]'); --using attribute
