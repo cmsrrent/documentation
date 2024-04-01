@@ -306,3 +306,8 @@ Locators of elements on page
 cy.get('.class-name');  --css selector
 cy.get('#some-id'); --using id
 cy.get('[type="text"]'); --using attribute
+
+
+Scripts
+========
+
