@@ -310,4 +310,9 @@ cy.get('[type="text"]'); --using attribute
 
 Scripts
 ========
+package.json file contains a scripts section where cypress CLI commands can be added to form an exectable scripts
 
+"cypress:run": "npx cypress open"
+The above line can be added and executed from the terminal using:
+
+npm run cypress:run
