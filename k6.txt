@@ -113,6 +113,12 @@ k6 run test.js --duration 30s
 You can set the number of iterations with the --iterations or -i flag, like this:
 k6 run test.js --iterations 100
 
+Run a test in debug mode, will return request and response information and headers but not the payloads
+k6 run --http-debug test.js
+
+Run a test in debug mode, will also return payloads for request and response
+k6 run --http-debug="full" test.js
+
 
 Think time
 ++++++++++
