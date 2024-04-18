@@ -113,6 +113,10 @@ k6 run test.js --duration 30s
 You can set the number of iterations with the --iterations or -i flag, like this:
 k6 run test.js --iterations 100
 
+set an environment variable at the command line that can be used within the test
+k6 run -e BASE_URL=https://test-api.k6.io --http-debug="full" env-var.js
+can be referebced in the script as __ENV.BASE_URL
+
 Run a test in debug mode, will return request and response information and headers but not the payloads
 k6 run --http-debug test.js
 
