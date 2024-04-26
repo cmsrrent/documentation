@@ -57,3 +57,7 @@
 
 8. Remove files from staging area
 	git rm --cached "filename" #This takes the file out of staging for further local amends
+
+9. general
+	git branch --view branches in local repo
+	git branch -r -- view branches in remote reop
