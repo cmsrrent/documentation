@@ -4,3 +4,13 @@ Useful commnands using github co-pilot
 @workspace - as in the context of the open project
 @terminal - ask questions about terminal commands e.g. how to execute a node project
 @vscode - to ask questions in the context of vscode options, e.g. themes
+
+#selection - instructs co-pilot to use the selected code in the editor
+#terminalselection /explain - will give details of the command selected in the terminal
+
+/help - co-pilot will provide help on all commands
+
+chaining commands
++++++++++++++++++
+
+@workspace /explain #selection - no further context it will try to explain the selected line of code in the editor
