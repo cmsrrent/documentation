@@ -1,0 +1,6 @@
+Useful commnands using github co-pilot
+=======================================
+
+@workspace - as in the context of the open project
+@terminal - ask questions about terminal commands e.g. how to execute a node project
+@vscode - to ask questions in the context of vscode options, e.g. themes
