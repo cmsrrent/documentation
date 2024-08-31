@@ -10,7 +10,7 @@ Useful commnands using github co-pilot
 
 /help - co-pilot will provide help on all commands
 
-chaining commands
+Chaining commands
 +++++++++++++++++
 
 @workspace /explain #selection - no further context it will try to explain the selected line of code in the editor
