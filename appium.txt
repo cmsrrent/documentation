@@ -1,20 +1,50 @@
-Helpers for Appium on Browserstack
-++++++++++++++++++++++++++++++++++
+Appium on BrowserStack - Beginner Notes
+=======================================
 
-node file.js -- command to run the file within a node project
-npm install wd --appium dependancy prior to running in browserstack
+1. What is Appium?
+	- Open-source tool for automating mobile apps (iOS, Android)
+	- Uses the WebDriver protocol: your test script (client) talks to an Appium server, which drives the device
+	- BrowserStack App Automate hosts the Appium server and real devices for you
 
-https://www.npmjs.com/package/wd
+2. Prerequisites
+	- Node.js and npm installed (node -v, npm -v)
+	- A BrowserStack account (username and access key from your account settings)
+	- An app file to test (.apk for Android, .ipa for iOS) uploaded to BrowserStack
 
-Appium architecture in browserstack
-https://www.browserstack.com/guide/appium-tutorial-for-testing
+3. Project setup
+	mkdir appium-demo && cd appium-demo
+	npm init -y # create package.json
+	npm install wd # WebDriver client used in the BrowserStack getting-started example
+	(Note: wd is no longer actively maintained; webdriverio is a common modern alternative)
 
-Appium getting started
-https://www.browserstack.com/docs/app-automate/appium/getting-started/nodejs
+4. Run a test
+	node file.js # run the script within the node project
 
+5. Keep credentials safe
+	- Do not hard-code your username/access key in scripts or commit them to Git
+	- Use environment variables instead:
+		export BROWSERSTACK_USERNAME="your-username"
+		export BROWSERSTACK_ACCESS_KEY="your-access-key"
+	- Read them in code with process.env.BROWSERSTACK_USERNAME
 
-Browserstack university
-https://test-university.browserstack.com/
+6. Typical test flow
+	1. Upload the app to BrowserStack (returns an app URL, e.g. bs://<app-id>)
+	2. Define capabilities (device, OS version, app URL)
+	3. Start a session
+	4. Find elements and interact (click, type, assert)
+	5. End the session (quit) so it is not left running
+	6. Check results in the BrowserStack App Automate dashboard
 
-iOS test app
+7. Troubleshooting
+	- Authentication error: check username and access key
+	- App not found: confirm the bs:// app URL is current
+	- Module not found: run npm install in the project folder
+	- Session left open: always call quit in a finally block
+
+8. Useful links
+	wd package: https://www.npmjs.com/package/wd
+	Appium architecture on BrowserStack: https://www.browserstack.com/guide/appium-tutorial-for-testing
+	Getting started (Node.js): https://www.browserstack.com/docs/app-automate/appium/getting-started/nodejs
+	BrowserStack University (practice site): https://test-university.browserstack.com/
+	iOS test app: (add link or file name here)
 
