@@ -1,66 +1,101 @@
-0 - overview commands
-	git --help # all git helps commands
-	git help <command> # help on a specific git command e.g. git help push
-	git config --list # shows local config e.g. username, email address, etc...
-	git config --global user.email "myemailaddress@here" #add email address to local config
-	git config --global user.name "your name" #add username to local config
-	git remote rm origin #remove link from local git to remote repo (helps when you cant push to repo)
-	git log --oneline #view log of commits just single line
-	git log # view all commits on the current branch
-	git status # status of working directory
-	
-1 - initialise a new local directory for git
-	launch gitBash on PC in local directory
-	cd to local directory within gitBash
-	git init # initialises local repo
-	git remote add origin https://github.com/cmsrrent/sdetu-training.git #URL specific to project
+Git Beginner Cheat Sheet
 
-2. Push local repo to remote repo (Github)
-	from GitBash relevant directory for project
-	git add -A
-	git commit -m "message here"
-	git push -u origin master
+1. Set up Git
+	git --help
+	git config --list
+	git config --global user.name "Your Name"
+	git config --global user.email "you@example.com"
+	git remote -v
+
+2. Start a new project
+	cd your-project-folder
+	git init
+	git remote add origin https://github.com/your-user/your-repo.git
+
+3. Clone an existing repository
+	git clone https://github.com/your-user/your-repo.git
+	cd your-repo
+
+4. Check status
 	git status
+	git status -sb
 
-3. Clone a public repository to your local machine	
-	make a local directory within Workspace folder
-	go to the new directory within gitbash
-	git init #initialise git
-	from github get the URL of the repo you wish to clone e.g. https://gitHub.com/timothyshort/sdetu-training.git
-	git clone https://gitHub.com/timothyshort/sdetu-training.git #this will clone all files from github to local
+5. Create and switch branches
+	git branch
+	git checkout -b feature/login
+	git switch -c feature/login
+	git checkout main
+	git switch main
 
-4. Create a new branch
-	git checkout -b <branch-name> #create a new branch with name provided and check it out immeditely
-	git branch <branch-name> #creates new branch with name provided but doesnt checkout into it
+6. Make changes
+	git add file-name.txt
+	git add .
+	git add -A
+	git commit -m "Add login form"
 
-5. Push updates to remote repo (GitHub)
-	git status #this shows which files haven been modified locally that aren't synched with the gitHub repo
-	git add -A #this pushes changed files into the staging area
-	git status #this shows which files are now set to staging for commit
-	git commit -m "Modified some stuff" #this commits changed files to local git with a comment
-	git status #this shows status of your branch with commits ahead of master
-	git push origin master #pushes changes into gitHub, changes should be visible in gitHub
+7. Push to GitHub
+	git push -u origin main
+	git push origin main
+	git push
 
-6. Apply file changes directly on gitHub
-	go to gitHub and edit a file online
-	go to gitBash
-	cd to appropiate local directory
-	git pull #this will pull down change from Github to your local repo
-	
-7. Git Ignore - Files we may use locally but want excluding from remote repo (e.g. log files)
-	Go to local directory and type 'touch .gitignore' #This will create a .gitignore file
-	Edit .gitignore file and add filenames, directory's or wildcards for files that you want ignored
-	e.g.
+8. Pull updates from GitHub
+	git pull
+	git pull --rebase origin main
+	git fetch origin
+
+9. View history
+	git log
+	git log --oneline
+	git log --oneline --decorate --graph --all
+	git show <commit-hash>
+
+10. Compare changes
+	git diff
+	git diff --staged
+
+11. Undo / fix mistakes
+	git restore <file>
+	git restore --staged <file>
+	git reset HEAD~1
+	git reset --hard HEAD
+	git revert <commit-hash>
+
+12. Save work temporarily
+	git stash
+	git stash list
+	git stash pop
+	git stash apply stash@{0}
+
+13. Ignore files
+	touch .gitignore
+	Add entries like:
 		log.txt
-		/dir1
-		*.logs
+		build/
+		*.log
+		.env
+	git rm --cached <file>
 
-8. Remove files from staging area
-	git rm --cached "filename" #This takes the file out of staging for further local amends
+14. Delete and merge branches
+	git branch -d feature/login
+	git branch -D feature/login
+	git merge main
+	git merge feature/login
 
-9. Misc
-	git branch --view branches in local repo
-	git branch -r -- view branches in remote repo
+15. Useful remote commands
+	git remote add origin <url>
+	git remote remove origin
+	git branch -r
+	git checkout --track origin/feature/login
+	git push origin --delete feature/login
 
-10. Merge
-	git merge master -- Merge the current branch with changes from master
+Quick workflow
+	1. git status
+	2. git add .
+	3. git commit -m "Your message"
+	4. git push
+
+Notes
+	- Use main or master depending on the project.
+	- Always check git status before pulling or pushing.
+	- git reset --hard and git clean -fd can delete work permanently, so use carefully.
+	- git pull combines fetching and merging; git fetch only downloads changes.
