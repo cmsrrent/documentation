@@ -1,6 +1,6 @@
 # Documentation
 
-This repository is a personal collection of study notes and reference material for software testing, automation, and web development topics.
+This repository is a personal collection of various study notes and reference material for software testing, automation, and misc web development topics.
 
 ## Contents
 
@@ -15,7 +15,7 @@ This repository is a personal collection of study notes and reference material f
 
 ## Purpose
 
-The project serves as a quick-reference vault for learning and revisiting technical concepts related to:
+The project is a quick-reference vault for learning and revisiting technical concepts related to:
 
 - Behavior-driven development (BDD)
 - Test automation frameworks
