@@ -1,5 +1,7 @@
 # Documentation
 
+![Documentation](https://img.shields.io/badge/Documentation-Study%20Notes-blueviolet)
+
 This repository is a personal collection of various study notes and reference material for software testing, automation, and misc web development topics.
 
 ## Contents
